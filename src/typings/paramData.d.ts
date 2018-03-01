@@ -1,3 +1,5 @@
+import { Model } from 'yueli';
+
 declare module 'yueli' {
   import KoaSession from 'koa-session'
 
@@ -8,9 +10,11 @@ declare module 'yueli' {
     session?: KoaSession.Session
     ip?: string
     curUser?: Model.User
-    user?: Model.User
     extraMsg?: string
     file?: Express.Multer.File
     files?: Express.Multer.File[] & { [field: string]: Express.Multer.File[] }
+
+    user?: Model.User
+    spot?: Model.Spot
   }
 }

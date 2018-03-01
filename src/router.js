@@ -4,6 +4,7 @@ import session from 'koa-session';
 import bodyParser from 'koa-bodyparser';
 
 import userRtr from './modules/user/router';
+import spotRtr from './modules/spot/router';
 
 import * as MockServ from './modules/mock/service';
 
@@ -24,6 +25,7 @@ export default function route(app) {
 
   // 一级路由
   apiRtr.use('/users', userRtr);
+  apiRtr.use('/spots', spotRtr);
 
   // 404 guard
   apiRtr.use((ctx, next) => {

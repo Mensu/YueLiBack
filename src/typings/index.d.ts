@@ -27,6 +27,9 @@ declare global {
   type UserEditableProps = Yueli.Model.UserEditableProps
   type UserCredentials = Yueli.Model.UserCredentials
   type UserFollower = Yueli.Model.UserFollower
+  type Spot = Yueli.Model.Spot
+  type Comment = Yueli.Model.Comment
+  type CommentType = Yueli.Model.CommentType
 }
 
 declare module 'yueli' {

@@ -23,3 +23,13 @@ export class UserFile extends File {
 }
 
 UserFile.Type = UserFileType;
+
+export class SpotFile extends File {
+  /**
+   *
+   * @param {number} spot_id
+   */
+  constructor(spot_id) {
+    super(`spot-${spot_id}-bg`);
+  }
+}

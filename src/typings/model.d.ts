@@ -20,5 +20,30 @@ declare module 'yueli' {
       nickname: string
       signature: string
     }
+
+    interface Spot {
+      spot_id: number
+      name: string
+      description: string
+      city: string
+      location: {}
+      rank: number
+      favorited?: boolean
+    }
+
+    type CommentType = 'spot' | 'travel' | 'feeling'
+
+    interface Comment {
+      comment_id: number
+      user_id: number
+      nickname: string
+      content: string
+      reply_to: {
+        user_id: number
+        nickname: string
+        content: string
+      }
+      time: Date
+    }
   }
 }
