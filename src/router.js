@@ -27,7 +27,7 @@ export default function route(app) {
 
   // 404 guard
   apiRtr.use((ctx, next) => {
-    if (ctx.body !== undefined) {
+    if (ctx.body === undefined) {
       return next();
     }
   });
