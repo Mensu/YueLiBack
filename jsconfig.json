@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "checkJs": true,
+    "lib": [
+      "esnext"
+    ]
+  },
+  "typeAcquisition": {
+    "enable": true
+  },
+  "exclude": [
+    "node_modules"
+  ]
+}
