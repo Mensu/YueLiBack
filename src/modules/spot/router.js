@@ -1,8 +1,12 @@
 import Router from 'koa-express-router';
 import { exportRtr, isPositiveInt } from '../../utils';
+import multer from '../../utils/multer';
 import { toMid } from '../../utils/toMid';
 import * as SpotCtrl from './controller';
+import * as TravelCtrl from '../travel/controller';
 import * as UserServ from '../user/service';
+
+const upload = multer();
 
 const spotRtr = new Router();
 export default exportRtr(spotRtr);
@@ -29,3 +33,8 @@ idRtr.post('/rank', SpotCtrl.rank);
 idRtr.route('/comments')
   .get(SpotCtrl.getCommentsList)
   .post(SpotCtrl.comment);
+
+idRtr.post('/travels',
+  upload.single('cover'),
+  TravelCtrl.create,
+);

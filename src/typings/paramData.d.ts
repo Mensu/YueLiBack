@@ -16,5 +16,7 @@ declare module 'yueli' {
 
     user?: Model.User
     spot?: Model.Spot
+    travel?: Model.Travel
+    travel_record?: Model.TravelRecord
   }
 }

@@ -30,6 +30,10 @@ declare global {
   type Spot = Yueli.Model.Spot
   type Comment = Yueli.Model.Comment
   type CommentType = Yueli.Model.CommentType
+  type Travel = Yueli.Model.Travel
+  type TravelEditableProps = Yueli.Model.TravelEditableProps
+  type TravelRecord = Yueli.Model.TravelRecord
+  type TravelRecordEditableProps = Yueli.Model.TravelRecordEditableProps
 }
 
 declare module 'yueli' {

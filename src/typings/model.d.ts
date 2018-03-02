@@ -45,5 +45,31 @@ declare module 'yueli' {
       }
       time: Date
     }
+
+    type Travel = TravelEditableProps & {
+      travel_id: number
+      user_id: number
+      nickname: string
+      favorite_count: number
+      favorited: boolean
+      comment_count: number
+      records: TravelRecord[]
+    }
+
+    interface TravelEditableProps {
+      title: string
+      first_day: Date
+    }
+
+    type TravelRecord  = TravelRecordEditableProps & {
+      travel_record_id: number
+      spot_name: string
+    }
+
+    interface TravelRecordEditableProps {
+      spot_id: number
+      content: string
+      time: Date
+    }
   }
 }
