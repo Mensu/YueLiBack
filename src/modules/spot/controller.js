@@ -1,7 +1,9 @@
+import * as SpotServ from './service';
 import * as SpotModel from './model';
 import * as CommentModel from '../comment/model';
-import { assign, pick } from '../../utils';
-import { SpotFile } from '../file/service';
+import { assign } from '../../utils';
+
+const { SpotFile } = SpotServ;
 
 /**
  * @param {Context} ctx
@@ -17,7 +19,7 @@ export async function getSpotsList(ctx, next) {
  * 解析 spot_id
  * @param {Context} ctx
  * @param {INext}   next
- * @param {string} id
+ * @param {string}  id
  */
 export async function parseSpotId(ctx, next, id) {
   const spot_id = Number(id);

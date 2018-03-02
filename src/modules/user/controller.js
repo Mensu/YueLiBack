@@ -1,7 +1,8 @@
 import * as UserModel from './model';
 import * as UserServ from './service';
 import { AE, assign, pick, has } from '../../utils';
-import { UserFile } from '../file/service';
+
+const { UserFile } = UserServ;
 
 /**
  * 检查是否已登录
@@ -73,7 +74,7 @@ export async function register(ctx, next) {
  * 解析 user_id
  * @param {Context} ctx
  * @param {INext}   next
- * @param {string} id
+ * @param {string}  id
  */
 export async function parseUserId(ctx, next, id) {
   const user_id = Number(id);
