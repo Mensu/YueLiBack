@@ -6,6 +6,7 @@ import bodyParser from 'koa-bodyparser';
 import userRtr from './modules/user/router';
 import spotRtr from './modules/spot/router';
 import travelRtr from './modules/travel/router';
+import trRtr from './modules/travel-record/router';
 
 import * as MockServ from './modules/mock/service';
 
@@ -28,6 +29,7 @@ export default function route(app) {
   apiRtr.use('/users', userRtr);
   apiRtr.use('/spots', spotRtr);
   apiRtr.use('/travels', travelRtr);
+  apiRtr.use('/travel-records', trRtr);
 
   // 404 guard
   apiRtr.use((ctx, next) => {
