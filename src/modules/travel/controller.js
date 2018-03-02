@@ -6,6 +6,7 @@ import { assign } from '../../utils';
 const { TravelFile } = TravelServ;
 
 /**
+ * 创建新的游记
  * @param {Context} ctx
  * @param {INext}   next
  */
@@ -18,6 +19,7 @@ export async function create(ctx, next) {
 }
 
 /**
+ * 获取游记列表
  * @param {Context} ctx
  * @param {INext}   next
  */
@@ -35,7 +37,7 @@ export async function getTravelsList(ctx, next) {
  */
 export async function parseTravelId(ctx, next, id) {
   const travel_id = Number(id);
-  const travel = await TravelModel.findById(travel_id);
+  const travel = await TravelServ.retrieveTravel(travel_id);
   assign(ctx.paramData, { travel });
   return next();
 }
@@ -53,6 +55,7 @@ export async function getTravelCover(ctx, next) {
 }
 
 /**
+ * 修改游记
  * @param {Context} ctx
  * @param {INext}   next
  */
@@ -65,12 +68,15 @@ export async function update(ctx, next) {
     const uploader = new TravelFile(travel_id);
     tasks.push(uploader.upload(file.buffer));
   }
-  tasks.push(TravelModel.update(travel_id, { ...body }));
+  if (Object.keys(body).length > 0) {
+    tasks.push(TravelModel.update(travel_id, { ...body }));
+  }
   await Promise.all(tasks);
   return ctx.setResp('修改游记成功');
 }
 
 /**
+ * 删除游记
  * @param {Context} ctx
  * @param {INext}   next
  */

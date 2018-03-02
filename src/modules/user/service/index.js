@@ -1,5 +1,5 @@
 import * as auth from './auth';
-import { pick, AE } from '../../../utils';
+import { AE } from '../../../utils';
 import * as UserModel from '../model';
 
 export { auth as require };

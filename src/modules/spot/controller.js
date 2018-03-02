@@ -6,6 +6,7 @@ import { assign } from '../../utils';
 const { SpotFile } = SpotServ;
 
 /**
+ * 获取景点列表
  * @param {Context} ctx
  * @param {INext}   next
  */
@@ -24,7 +25,7 @@ export async function getSpotsList(ctx, next) {
 export async function parseSpotId(ctx, next, id) {
   const spot_id = Number(id);
   const { user_id } = ctx.paramData.curUser;
-  const spot = await SpotModel.findById(spot_id, user_id);
+  const spot = await SpotServ.retrieveSpot(spot_id, user_id);
   assign(ctx.paramData, { spot });
   return next();
 }

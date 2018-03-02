@@ -98,7 +98,7 @@ SELECT travel.travel_id, user.user_id, user.nickname, travel.title, travel.first
  */
 export async function findById(travel_id) {
   const sql = `
-SELECT travel.travel_id, travel.title, travel.first_day
+SELECT travel_id, user_id, title, first_day
   FROM travel
   WHERE travel_id = ? AND travel.is_deleted = 0
 ;
