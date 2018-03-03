@@ -12,7 +12,7 @@ function refactorRawTravels(rawTravels) {
   for (const one of rawTravels) {
     if (one.travel_id !== curTravelId) {
       const travel = pick(one,
-        'travel_id', 'user_id', 'nickname', 'title', 'first_day',
+        'travel_id', 'user_id', 'nickname', 'title',
         'favorite_count', 'favorited', 'comment_count', 'records',
       );
       curTravelId = travel.travel_id;
@@ -80,7 +80,7 @@ export async function findList(filter, user_id) {
   }
 
   const sql = `
-SELECT travel.travel_id, user.user_id, user.nickname, travel.title, travel.first_day,
+SELECT travel.travel_id, user.user_id, user.nickname, travel.title,
         COALESCE(favorite_count, 0) AS favorite_count,
         IF(travel_favorited.user_id IS NULL, FALSE, TRUE) AS favorited,
         COALESCE(comment_count, 0) AS comment_count,
@@ -127,7 +127,7 @@ SELECT travel.travel_id, user.user_id, user.nickname, travel.title, travel.first
  */
 export async function findById(travel_id) {
   const sql = `
-SELECT travel_id, user_id, title, first_day
+SELECT travel_id, user_id, title
   FROM travel
   WHERE travel_id = ? AND travel.is_deleted = 0
 ;
@@ -149,10 +149,7 @@ INSERT INTO travel
   SET ?
 ;
 `;
-  props = pick(props, 'user_id', 'title', 'first_day');
-  if (has(props, 'first_day')) {
-    props.first_day = new Date(props.first_day);
-  }
+  props = pick(props, 'user_id', 'title');
   /** @type {InsertResult} */
   const { insertId } = await query(sql, [props]);
   return insertId;
@@ -169,10 +166,7 @@ UPDATE travel
   WHERE travel_id = ?
 ;
 `;
-  props = pick(props, 'title', 'first_day');
-  if (has(props, 'first_day')) {
-    props.first_day = new Date(props.first_day);
-  }
+  props = pick(props, 'title');
   const values = [props, travel_id];
   return query(sql, values);
 }

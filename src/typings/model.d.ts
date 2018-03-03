@@ -50,6 +50,7 @@ declare module 'yueli' {
       travel_id: number
       user_id: number
       nickname: string
+      first_day?: Date
       favorite_count: number
       favorited: boolean
       comment_count: number
@@ -58,7 +59,6 @@ declare module 'yueli' {
 
     interface TravelEditableProps {
       title: string
-      first_day: Date
     }
 
     type TravelRecord  = TravelRecordEditableProps & {
