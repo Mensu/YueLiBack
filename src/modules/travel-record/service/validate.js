@@ -1,4 +1,4 @@
-import { AE, assign } from '../../../utils';
+import { AE } from '../../../utils';
 import * as SpotModel from '../../spot/model';
 
 /**

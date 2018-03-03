@@ -1,5 +1,5 @@
 import { query } from '../db/service';
-import { has, pick } from '../../utils';
+import { pick } from '../../utils';
 
 /**
  * @param {number} travel_record_id
@@ -28,10 +28,7 @@ INSERT INTO travel_record
   SET ?
 ;
 `;
-  props = pick(props, 'travel_id', 'spot_id', 'content', 'time');
-  if (has(props, 'time')) {
-    props.time = new Date(props.time);
-  }
+  props = pick(props, 'travel_id', 'spot_id', 'content');
   /** @type {InsertResult} */
   const { insertId } = await query(sql, [props]);
   return insertId;
@@ -48,10 +45,7 @@ UPDATE travel_record
   WHERE travel_record_id = ?
 ;
 `;
-  props = pick(props, 'spot_id', 'content', 'time');
-  if (has(props, 'time')) {
-    props.time = new Date(props.time);
-  }
+  props = pick(props, 'spot_id', 'content');
   const values = [props, travel_record_id];
   return query(sql, values);
 }
