@@ -31,6 +31,7 @@ function refactorRawTravels(rawTravels) {
     if (one.records.length > 0) {
       _.sortBy(one.records, ['time']);
       location = one.records[0].spot_name;
+      one.first_day = one.records[0].time;
       /** @type {string} */
       let curDay = null;
       const format = 'YYYY-MM-DD';
@@ -125,7 +126,17 @@ SELECT travel.travel_id, user.user_id, user.nickname, travel.title, travel.first
  * @param {number} travel_id
  */
 export async function findById(travel_id) {
-  const [travel] = await findList({ travel_id }, 0);
+  const sql = `
+SELECT travel_id, user_id, title, first_day
+  FROM travel
+  WHERE travel_id = ? AND travel.is_deleted = 0
+;
+`;
+  const values = [travel_id];
+  /** @type {[Travel]} */
+  const [travel] = await query(sql, values);
+  const [travelWithRecord = { records: [] }] = await findList({ travel_id }, 0);
+  assign(travel, travelWithRecord);
   return travel;
 }
 
