@@ -5,6 +5,16 @@ import { assign } from '../../utils';
 const { TravelRecordFile } = TRServ;
 
 /**
+ * 获取游记记录列表
+ * @param {Context} ctx
+ * @param {INext}   next
+ */
+export async function getRecordsList(ctx, next) {
+  const { records } = ctx.paramData.travel;
+  return ctx.setResp('获取游记记录成功', records);
+}
+
+/**
  * 创建新的游记记录
  * @param {Context} ctx
  * @param {INext}   next

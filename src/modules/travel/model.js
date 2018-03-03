@@ -1,5 +1,6 @@
+import _ from 'lodash';
 import { query } from '../db/service';
-import { has, pick } from '../../utils';
+import { has, pick, assign, formatDate } from '../../utils';
 
 /**
  * @param {(Travel & TravelRecord)[]} rawTravels
@@ -23,16 +24,38 @@ function refactorRawTravels(rawTravels) {
     const record = pick(one, 'travel_record_id', 'spot_id', 'spot_name', 'content', 'time');
     curTravel.records.push(record);
   }
+  // add location, duration for travel, day for record
+  for (const one of travels) {
+    let location = null;
+    let duration = 0;
+    if (one.records.length > 0) {
+      _.sortBy(one.records, ['time']);
+      location = one.records[0].spot_name;
+      /** @type {string} */
+      let curDay = null;
+      const format = 'YYYY-MM-DD';
+      for (const record of one.records) {
+        const recordDay = formatDate(record.time, format);
+        if (curDay !== recordDay) {
+          duration += 1;
+          curDay = recordDay;
+        }
+        assign(record, { day: duration });
+      }
+    }
+    assign(one, { location, duration });
+  }
   return travels;
 }
 
 /**
- * @param {{ user_id?: number, spot_id?: number }} filter
+ * @param {{ user_id?: number, spot_id?: number, travel_id?: number }} filter
  * @param {number} user_id 当前用户
  */
 export async function findList(filter, user_id) {
   let userFilter = '';
   let spotFilter = '';
+  let travelFilter = '';
   const values = [user_id];
   if (has(filter, 'user_id')) {
     userFilter = 'AND travel.user_id = ?';
@@ -49,6 +72,10 @@ export async function findList(filter, user_id) {
     ON travel.travel_id = travel_record_spot.travel_id
 `;
     values.unshift(filter.spot_id);
+  }
+  if (has(filter, 'travel_id')) {
+    travelFilter = 'AND travel.travel_id = ?';
+    values.push(filter.travel_id);
   }
 
   const sql = `
@@ -86,6 +113,7 @@ SELECT travel.travel_id, user.user_id, user.nickname, travel.title, travel.first
   WHERE travel.is_deleted = 0
     AND travel_record.is_deleted = 0
     ${userFilter}
+    ${travelFilter}
 ;
 `;
   /** @type {(Travel & TravelRecord)[]} */
@@ -97,15 +125,7 @@ SELECT travel.travel_id, user.user_id, user.nickname, travel.title, travel.first
  * @param {number} travel_id
  */
 export async function findById(travel_id) {
-  const sql = `
-SELECT travel_id, user_id, title, first_day
-  FROM travel
-  WHERE travel_id = ? AND travel.is_deleted = 0
-;
-`;
-  const values = [travel_id];
-  /** @type {[Travel]} */
-  const [travel] = await query(sql, values);
+  const [travel] = await findList({ travel_id }, 0);
   return travel;
 }
 

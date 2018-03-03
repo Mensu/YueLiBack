@@ -26,6 +26,7 @@ export async function create(ctx, next) {
 export async function getTravelsList(ctx, next) {
   const { curUser: { user_id }, query } = ctx.paramData;
   const travels = await TravelModel.findList(query, user_id);
+  travels.forEach(one => delete one.records);
   return ctx.setResp('获取游记列表成功', travels);
 }
 

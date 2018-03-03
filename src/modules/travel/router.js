@@ -46,9 +46,11 @@ idRtr.route('/comments')
   .get(TravelCtrl.getCommentsList)
   .post(TravelCtrl.comment);
 
-idRtr.post('/travel-records',
-  toMid(TravelServ.require.authorIsCurUser),
-  upload.single('photo'),
-  toMid(TRServ.validate.spot_id),
-  TRCtrl.create,
-);
+idRtr.route('/travel-records')
+  .get(TRCtrl.getRecordsList)
+  .post(
+    toMid(TravelServ.require.authorIsCurUser),
+    upload.single('photo'),
+    toMid(TRServ.validate.spot_id),
+    TRCtrl.create,
+  );

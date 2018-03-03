@@ -20,11 +20,12 @@ export function sleep(millisecond) {
 
 /**
  * 格式化日期字符串
- * @param  {Date}      date
+ * @param  {Date}      [date]
+ * @param  {string}    [format]
  * @author 陈宇翔
  */
-export function formatDate(date = new Date()) {
-  return moment(new Date(date)).format('YYYY-MM-DD HH:mm:ss');
+export function formatDate(date = new Date(), format = 'YYYY-MM-DD HH:mm:ss') {
+  return moment(new Date(date)).format(format);
 }
 /**
  * 获得请求发送方的 ip
