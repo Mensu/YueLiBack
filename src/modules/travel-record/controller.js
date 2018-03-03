@@ -11,7 +11,7 @@ const { TravelRecordFile } = TRServ;
  */
 export async function getRecordsList(ctx, next) {
   const { records } = ctx.paramData.travel;
-  return ctx.setResp('获取游记记录成功', records);
+  return ctx.setResp('获取游记记录列表成功', records);
 }
 
 /**
