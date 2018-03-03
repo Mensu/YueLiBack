@@ -34,6 +34,8 @@ declare global {
   type TravelEditableProps = Yueli.Model.TravelEditableProps
   type TravelRecord = Yueli.Model.TravelRecord
   type TravelRecordEditableProps = Yueli.Model.TravelRecordEditableProps
+  type Feeling = Yueli.Model.Feeling
+  type FeelingEditableProps = Yueli.Model.FeelingEditableProps
 }
 
 declare module 'yueli' {

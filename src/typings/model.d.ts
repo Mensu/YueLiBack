@@ -61,17 +61,30 @@ declare module 'yueli' {
       title: string
     }
 
-    type TravelRecord  = TravelRecordEditableProps & {
+    type TravelRecord = TravelRecordEditableProps & {
       travel_record_id: number
       spot_name: string
       travel_id?: number
       user_id?: number
+      time: Date
     }
 
     interface TravelRecordEditableProps {
       spot_id: number
       content: string
+    }
+
+    type Feeling = FeelingEditableProps & {
+      feeling_id: number
+      user_id: number
+      nickname: string
+      longitude: number
+      latitude: number
       time: Date
+    }
+
+    interface FeelingEditableProps {
+      content: string
     }
   }
 }

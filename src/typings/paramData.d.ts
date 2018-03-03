@@ -18,5 +18,6 @@ declare module 'yueli' {
     spot?: Model.Spot
     travel?: Model.Travel
     travel_record?: Model.TravelRecord
+    feeling?: Model.Feeling
   }
 }
