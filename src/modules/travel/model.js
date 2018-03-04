@@ -50,13 +50,14 @@ function refactorRawTravels(rawTravels) {
 }
 
 /**
- * @param {{ user_id?: number, spot_id?: number, travel_id?: number }} filter
+ * @param {{ user_id?: number, spot_id?: number, travel_id?: number|number[] }} filter
  * @param {number} user_id 当前用户
  */
 export async function findList(filter, user_id) {
   let userFilter = '';
   let spotFilter = '';
   let travelFilter = '';
+  /** @type {any[]} */
   const values = [user_id];
   if (has(filter, 'user_id')) {
     userFilter = 'AND travel.user_id = ?';
@@ -75,7 +76,7 @@ export async function findList(filter, user_id) {
     values.unshift(filter.spot_id);
   }
   if (has(filter, 'travel_id')) {
-    travelFilter = 'AND travel.travel_id = ?';
+    travelFilter = 'AND travel.travel_id IN (?)';
     values.push(filter.travel_id);
   }
 
@@ -126,17 +127,7 @@ SELECT travel.travel_id, user.user_id, user.nickname, travel.title,
  * @param {number} travel_id
  */
 export async function findById(travel_id) {
-  const sql = `
-SELECT travel_id, user_id, title
-  FROM travel
-  WHERE travel_id = ? AND travel.is_deleted = 0
-;
-`;
-  const values = [travel_id];
-  /** @type {[Travel]} */
-  const [travel] = await query(sql, values);
-  const [travelWithRecord = { records: [] }] = await findList({ travel_id }, 0);
-  assign(travel, travelWithRecord);
+  const [travel] = await findList({ travel_id }, 0);
   return travel;
 }
 

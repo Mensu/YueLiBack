@@ -1,7 +1,7 @@
 import * as FeelingServ from './service';
 import * as FeelingModel from './model';
 import * as CommentModel from '../comment/model';
-import { jsonParse, assign, has, jsonParseProp } from '../../utils';
+import { assign, has, jsonParseProp } from '../../utils';
 
 const { FeelingFile } = FeelingServ;
 

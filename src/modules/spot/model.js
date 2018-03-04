@@ -49,10 +49,17 @@ SELECT spot.spot_id, name, description, city, location,
   return refactorRawSpot(spot);
 }
 
+
 /**
- * @param {number} user_id
+ * @param {{ spot_id?: number|number[] }} filter
  */
-export async function findList(user_id) {
+export async function findList(filter = {}) {
+  const values = [];
+  let spotFilter = '';
+  if (has(filter, 'spot_id')) {
+    spotFilter = 'AND spot.spot_id IN (?)';
+    values.push(filter.spot_id);
+  }
   const sql = `
 SELECT spot.spot_id, name, description, city, location, rank
   FROM spot
@@ -62,9 +69,10 @@ SELECT spot.spot_id, name, description, city, location, rank
         GROUP BY spot_id
       ) AS spot_avg_rank
       ON spot.spot_id = spot_avg_rank.spot_id
+  WHERE TRUE
+    ${spotFilter}
 ;
 `;
-  const values = [user_id];
   /** @type {Spot[]} */
   const spots = await query(sql, values);
   return spots.map(refactorRawSpot);

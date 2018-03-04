@@ -86,5 +86,11 @@ declare module 'yueli' {
     interface FeelingEditableProps {
       content: string
     }
+
+    interface Favorite {
+      type: 'travel' | 'spot'
+      id: number
+      time: Date
+    }
   }
 }

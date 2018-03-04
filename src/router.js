@@ -8,6 +8,7 @@ import spotRtr from './modules/spot/router';
 import travelRtr from './modules/travel/router';
 import trRtr from './modules/travel-record/router';
 import feelingRtr from './modules/feeling/router';
+import favRtr from './modules/favorite/router';
 
 import * as MockServ from './modules/mock/service';
 
@@ -32,7 +33,7 @@ export default function route(app) {
   apiRtr.use('/travels', travelRtr);
   apiRtr.use('/travel-records', trRtr);
   apiRtr.use('/feelings', feelingRtr);
-  apiRtr.use('/favorites', MockServ.mockAPI);
+  apiRtr.use('/favorites', favRtr);
   apiRtr.use('/notifications', MockServ.mockAPI);
 
   // 404 guard

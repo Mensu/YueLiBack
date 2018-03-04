@@ -11,8 +11,7 @@ const { SpotFile } = SpotServ;
  * @param {INext}   next
  */
 export async function getSpotsList(ctx, next) {
-  const { user_id } = ctx.paramData.curUser;
-  const spots = await SpotModel.findList(user_id);
+  const spots = await SpotModel.findList();
   return ctx.setResp('获取景点列表成功', spots);
 }
 
