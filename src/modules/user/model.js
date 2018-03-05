@@ -130,3 +130,19 @@ DELETE FROM user_follower
   const values = [follower_id, user_id];
   return query(sql, values);
 }
+
+/**
+ * @param {number|number[]} user_id
+ */
+export async function findNameById(user_id) {
+  if (Array.isArray(user_id) && user_id.length === 0) return [];
+  const sql = `
+SELECT user_id, nickname
+  FROM user
+  WHERE user_id IN (?)
+;
+`;
+  /** @type {User[]} */
+  const users = await query(sql, [user_id]);
+  return users;
+}

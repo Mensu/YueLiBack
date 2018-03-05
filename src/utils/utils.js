@@ -27,6 +27,23 @@ export function sleep(millisecond) {
 export function formatDate(date = new Date(), format = 'YYYY-MM-DD HH:mm:ss') {
   return moment(new Date(date)).format(format);
 }
+
+/**
+ * 将数组转化为映射
+ * @param  {any[]}       arr
+ * @param  {string}      [keyPropName]     要作为 key 的属性的属性名
+ * @param  {string}      [valuePropName]   要作为 value 的属性的属性名
+ * @return {{ [key: string]: any }}
+ * @author 陈宇翔
+ */
+export function arr2Map(arr, keyPropName, valuePropName) {
+  const ret = {};
+  for (const one of arr) {
+    ret[keyPropName ? one[keyPropName] : one] = (valuePropName ? one[valuePropName] : one);
+  }
+  return ret;
+}
+
 /**
  * 获得请求发送方的 ip
  * @param   {Context}  ctx

@@ -92,5 +92,23 @@ declare module 'yueli' {
       id: number
       time: Date
     }
+
+    type Notification = NotificationEditableProps & {
+      notification_id: number
+      sender_id: number
+      time: Date
+      is_read?: boolean
+    }
+
+    interface NotificationEditableProps {
+      type: string
+      content: {
+        user_id?: number
+        comment_id?: number
+        travel_id?: number
+        feeling_id?: number
+        sender_id?: number
+      }
+    }
   }
 }

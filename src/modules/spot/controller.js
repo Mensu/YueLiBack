@@ -117,6 +117,7 @@ export async function comment(ctx, next) {
     body,
   } = ctx.paramData;
   const props = { user_id, ...body };
-  await CommentModel.comment('spot', spot_id, props);
-  return ctx.setResp('评论成功');
+  const comment_id = await CommentModel.comment('spot', spot_id, props);
+  await ctx.setResp('评论成功', { comment_id });
+  return next();
 }

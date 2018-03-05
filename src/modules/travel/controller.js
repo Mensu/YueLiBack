@@ -15,7 +15,9 @@ export async function create(ctx, next) {
   const travel_id = await TravelModel.create({ user_id, ...body });
   const uploader = new TravelFile(travel_id);
   await uploader.upload(file.buffer);
-  return ctx.setResp('创建游记成功', { travel_id });
+  await ctx.setResp('创建游记成功', { travel_id });
+  assign(ctx.paramData, { travel_id });
+  return next();
 }
 
 /**
@@ -98,7 +100,8 @@ export async function favorite(ctx, next) {
     travel: { travel_id },
   } = ctx.paramData;
   await TravelModel.favorite(travel_id, user_id);
-  return ctx.setResp('收藏游记成功');
+  await ctx.setResp('收藏游记成功');
+  return next();
 }
 
 /**
@@ -138,6 +141,7 @@ export async function comment(ctx, next) {
     body,
   } = ctx.paramData;
   const props = { user_id, ...body };
-  await CommentModel.comment('travel', travel_id, props);
-  return ctx.setResp('评论成功');
+  const comment_id = await CommentModel.comment('travel', travel_id, props);
+  await ctx.setResp('评论成功', { comment_id });
+  return next();
 }

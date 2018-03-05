@@ -1,10 +1,11 @@
 import Router from 'koa-express-router';
-import { exportRtr, isPositiveInt } from '../../utils';
+import { exportRtr, isPositiveInt, detach } from '../../utils';
 import multer from '../../utils/multer';
 import { toMid } from '../../utils/toMid';
 import * as FeelingCtrl from './controller';
 import * as UserServ from '../user/service';
 import * as FeelingServ from './service';
+import * as CommServ from '../comment/service';
 
 const upload = multer();
 
@@ -18,6 +19,7 @@ feelingRtr.route('/')
   .post(
     upload.single('photo'),
     FeelingCtrl.create,
+    detach(UserServ.PostFeelingNotifier.toMid(UserServ.PostFeelingNotifier)),
   );
 
 feelingRtr.param('feeling_id', FeelingCtrl.parseFeelingId);
@@ -28,10 +30,11 @@ feelingRtr.use(`/:feeling_id${isPositiveInt}`, exportRtr(idRtr));
 idRtr.route('/')
   .get({ photo: 'photo' }, FeelingCtrl.getFeelingPhoto)
   .all(toMid(FeelingServ.require.authorIsCurUser))
-  .delete(
-    FeelingCtrl.del,
-  );
+  .delete(FeelingCtrl.del);
 
 idRtr.route('/comments')
   .get(FeelingCtrl.getCommentsList)
-  .post(FeelingCtrl.comment);
+  .post(
+    FeelingCtrl.comment,
+    detach(CommServ.CommentFeelingNotifier.toMid(CommServ.CommentFeelingNotifier)),
+  );

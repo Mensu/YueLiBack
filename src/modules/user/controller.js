@@ -166,9 +166,9 @@ export async function follow(ctx, next) {
     user: { user_id },
     curUser: { user_id: follower },
   } = ctx.paramData;
-  // if (user_id === follower) {
-  //   throw new AE.SoftError(AE.BAD_REQUEST, '不能关注自己');
-  // }
+  if (user_id === follower) {
+    throw new AE.SoftError(AE.BAD_REQUEST, '不能关注自己');
+  }
   await UserModel.follow(follower, user_id);
   await ctx.setResp('关注成功');
   return next();
@@ -185,6 +185,5 @@ export async function unfollow(ctx, next) {
     curUser: { user_id: follower },
   } = ctx.paramData;
   await UserModel.unfollow(follower, user_id);
-  await ctx.setResp('取消关注成功');
-  return next();
+  return ctx.setResp('取消关注成功');
 }

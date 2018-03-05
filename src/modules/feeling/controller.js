@@ -32,7 +32,9 @@ export async function create(ctx, next) {
   const feeling_id = await FeelingModel.create({ user_id, ...body });
   const uploader = new FeelingFile(feeling_id);
   await uploader.upload(file.buffer);
-  return ctx.setResp('发表心情成功', { feeling_id });
+  await ctx.setResp('发表心情成功', { feeling_id });
+  assign(ctx.paramData, { feeling_id });
+  return next();
 }
 
 /**
@@ -94,6 +96,7 @@ export async function comment(ctx, next) {
     body,
   } = ctx.paramData;
   const props = { user_id, ...body };
-  await CommentModel.comment('feeling', feeling_id, props);
-  return ctx.setResp('评论成功');
+  const comment_id = await CommentModel.comment('feeling', feeling_id, props);
+  await ctx.setResp('评论成功', { comment_id });
+  return next();
 }

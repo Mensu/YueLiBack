@@ -95,3 +95,19 @@ UPDATE feeling
   const values = [feeling_id];
   return query(sql, values);
 }
+
+/**
+ * @param {number|number[]} feeling_id
+ */
+export async function findNameById(feeling_id) {
+  if (Array.isArray(feeling_id) && feeling_id.length === 0) return [];
+  const sql = `
+SELECT feeling_id, content
+  FROM feeling
+  WHERE feeling_id IN (?)
+;
+`;
+  /** @type {Feeling[]} */
+  const feelings = await query(sql, [feeling_id]);
+  return feelings;
+}

@@ -205,3 +205,19 @@ DELETE FROM travel_favorite
   const values = [travel_id, user_id];
   return query(sql, values);
 }
+
+/**
+ * @param {number|number[]} travel_id
+ */
+export async function findNameById(travel_id) {
+  if (Array.isArray(travel_id) && travel_id.length === 0) return [];
+  const sql = `
+SELECT travel_id, title
+  FROM travel
+  WHERE travel_id IN (?)
+;
+`;
+  /** @type {Travel[]} */
+  const travels = await query(sql, [travel_id]);
+  return travels;
+}

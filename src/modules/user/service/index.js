@@ -5,6 +5,7 @@ import * as UserModel from '../model';
 export { auth as require };
 export * from './password';
 export * from './UserFile';
+export * from './notifiers';
 
 /**
  * 根据 user_id 或 username 获取用户，用户不存在则抛出异常

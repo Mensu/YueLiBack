@@ -88,3 +88,22 @@ export async function handleError(e) {
 export function exportRtr(router) {
   return router.routes();
 }
+
+/**
+ * 不等待中间件执行完成，只触发中间件的执行，从而可以在中间件执行的过程中响应
+ *
+ * 适用场景例如：通知的中间件。主要请求已经完成后，通知可以去后台做，没必要等通知插完数据库完毕后再响应，延长用户等待时间
+ * @param  {IMiddleware}  mid  中间件
+ * @return  {IMiddleware}
+ */
+export function detach(mid) {
+  return async (ctx, next) => {
+    try {
+      const ret = mid(ctx, () => Promise.resolve());
+      if (ret.catch) ret.catch(e => logger.error(e));
+    } catch (e) {
+      logger.error(e);
+    }
+    return next();
+  };
+}

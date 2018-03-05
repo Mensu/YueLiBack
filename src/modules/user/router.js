@@ -1,5 +1,5 @@
 import Router from 'koa-express-router';
-import { exportRtr, isPositiveInt } from '../../utils';
+import { exportRtr, isPositiveInt, detach } from '../../utils';
 import multer from '../../utils/multer';
 import { toMid } from '../../utils/toMid';
 import * as UserCtrl from './controller';
@@ -30,7 +30,10 @@ idRtr.route('/')
   );
 idRtr.route('/followers')
   .get(UserCtrl.getFollowers)
-  .post(UserCtrl.follow)
+  .post(
+    UserCtrl.follow,
+    detach(UserServ.FollowUserNotifier.toMid(UserServ.FollowUserNotifier)),
+  )
   .delete(UserCtrl.unfollow);
 
 userRtr.use(toMid(UserServ.require.isLoggedIn));

@@ -11,7 +11,7 @@ declare global {
   type RequestStream = Request.Request
   type ParamData = Yueli.ParamData
   type KoaExpressRouter = KER
-  type IMiddleware = Koa.IMiddleware
+  type IMiddleware = (ctx: Context, next: INext) => Promise<any>
   type INext = () => Promise<any>
   type Application = Koa
   type MulterInstance = Yueli.MulterInstance
@@ -37,6 +37,8 @@ declare global {
   type Feeling = Yueli.Model.Feeling
   type FeelingEditableProps = Yueli.Model.FeelingEditableProps
   type Favorite = Yueli.Model.Favorite
+  type Notification = Yueli.Model.Notification
+  type NotificationEditableProps = Yueli.Model.NotificationEditableProps
 }
 
 declare module 'yueli' {

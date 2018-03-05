@@ -74,3 +74,36 @@ INSERT INTO ??
     await query(sql, [tableName, { comment_id, [idName]: id }], conn);
   }
 }
+
+/**
+ *
+ * @param {number} comment_id
+ */
+export async function findById(comment_id) {
+  const sql = `
+SELECT comment_id, user_id, reply_to_id, content, time
+  FROM comment
+  WHERE comment_id = ?
+;
+`;
+  const values = [comment_id];
+  /** @type {[Comment]} */
+  const [comment] = await query(sql, values);
+  return comment;
+}
+
+/**
+ * @param {number|number[]} comment_id
+ */
+export async function findNameById(comment_id) {
+  if (Array.isArray(comment_id) && comment_id.length === 0) return [];
+  const sql = `
+SELECT comment_id, content
+  FROM comment
+  WHERE comment_id IN (?)
+;
+`;
+  /** @type {Comment[]} */
+  const comments = await query(sql, [comment_id]);
+  return comments;
+}

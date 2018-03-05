@@ -1,5 +1,5 @@
 import Router from 'koa-express-router';
-import { exportRtr, isPositiveInt } from '../../utils';
+import { exportRtr, isPositiveInt, detach } from '../../utils';
 import multer from '../../utils/multer';
 import { toMid } from '../../utils/toMid';
 import * as TravelCtrl from './controller';
@@ -7,6 +7,7 @@ import * as TRCtrl from '../travel-record/controller';
 import * as UserServ from '../user/service';
 import * as TravelServ from './service';
 import * as TRServ from '../travel-record/service';
+import * as CommServ from '../comment/service';
 
 const upload = multer();
 
@@ -20,6 +21,7 @@ travelRtr.route('/')
   .post(
     upload.single('cover'),
     TravelCtrl.create,
+    detach(UserServ.PostTravelNotifier.toMid(UserServ.PostTravelNotifier)),
   );
 
 travelRtr.param('travel_id', TravelCtrl.parseTravelId);
@@ -39,12 +41,18 @@ idRtr.route('/')
   );
 
 idRtr.route('/favorite')
-  .post(TravelCtrl.favorite)
+  .post(
+    TravelCtrl.favorite,
+    detach(TravelServ.FavTravelNotifier.toMid(TravelServ.FavTravelNotifier)),
+  )
   .delete(TravelCtrl.unfavorite);
 
 idRtr.route('/comments')
   .get(TravelCtrl.getCommentsList)
-  .post(TravelCtrl.comment);
+  .post(
+    TravelCtrl.comment,
+    detach(CommServ.CommentTravelNotifier.toMid(CommServ.CommentTravelNotifier)),
+  );
 
 idRtr.route('/travel-records')
   .get(TRCtrl.getRecordsList)

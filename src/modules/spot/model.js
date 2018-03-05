@@ -125,3 +125,19 @@ INSERT INTO spot_rank
   const values = [props, rank, rank];
   return query(sql, values);
 }
+
+/**
+ * @param {number|number[]} spot_id
+ */
+export async function findNameById(spot_id) {
+  if (Array.isArray(spot_id) && spot_id.length === 0) return [];
+  const sql = `
+SELECT spot_id, name
+  FROM spot
+  WHERE spot_id IN (?)
+;
+`;
+  /** @type {Spot[]} */
+  const spots = await query(sql, [spot_id]);
+  return spots;
+}

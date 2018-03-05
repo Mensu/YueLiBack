@@ -9,6 +9,7 @@ import travelRtr from './modules/travel/router';
 import trRtr from './modules/travel-record/router';
 import feelingRtr from './modules/feeling/router';
 import favRtr from './modules/favorite/router';
+import notiRtr from './modules/notification/router';
 
 import * as MockServ from './modules/mock/service';
 
@@ -34,17 +35,13 @@ export default function route(app) {
   apiRtr.use('/travel-records', trRtr);
   apiRtr.use('/feelings', feelingRtr);
   apiRtr.use('/favorites', favRtr);
-  apiRtr.use('/notifications', MockServ.mockAPI);
+  apiRtr.use('/notifications', notiRtr);
 
   // 404 guard
   apiRtr.use((ctx, next) => {
-    if (ctx.body === undefined) {
-      return next();
+    if (ctx.body !== undefined) {
+      throw new AE.SoftError(AE.NOT_FOUND, '找不到该路径');
     }
-  });
-
-  app.use((ctx, next) => {
-    throw new AE.SoftError(AE.NOT_FOUND, '找不到该路径');
   });
 }
 

@@ -1,8 +1,9 @@
 import Router from 'koa-express-router';
-import { exportRtr, isPositiveInt } from '../../utils';
+import { exportRtr, isPositiveInt, detach } from '../../utils';
 import { toMid } from '../../utils/toMid';
 import * as SpotCtrl from './controller';
 import * as UserServ from '../user/service';
+import * as CommServ from '../comment/service';
 
 const spotRtr = new Router();
 export default exportRtr(spotRtr);
@@ -28,4 +29,7 @@ idRtr.post('/rank', SpotCtrl.rank);
 
 idRtr.route('/comments')
   .get(SpotCtrl.getCommentsList)
-  .post(SpotCtrl.comment);
+  .post(
+    SpotCtrl.comment,
+    detach(CommServ.CommentCommentNotifier.toMid(CommServ.CommentCommentNotifier)),
+  );

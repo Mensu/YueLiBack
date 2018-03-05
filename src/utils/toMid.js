@@ -1,4 +1,5 @@
 import util from 'util';
+import logger from './logger';
 
 /**
  * 将 func 函数变成 router.param 函数的中间件

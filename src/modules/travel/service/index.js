@@ -2,8 +2,9 @@ import * as auth from './auth';
 import * as TravelModel from '../model';
 import { AE } from '../../../utils';
 
-export * from './TravelFile';
 export { auth as require };
+export * from './TravelFile';
+export * from './notifiers';
 
 /**
  * 根据 travel_id 获取游记，游记不存在则抛出异常
