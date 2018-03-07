@@ -39,7 +39,7 @@ export default function route(app) {
 
   // 404 guard
   apiRtr.use((ctx, next) => {
-    if (ctx.body !== undefined) {
+    if (ctx.body === undefined) {
       throw new AE.SoftError(AE.NOT_FOUND, '找不到该路径');
     }
   });
