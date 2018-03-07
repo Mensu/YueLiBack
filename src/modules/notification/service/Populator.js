@@ -75,9 +75,12 @@ export class Polulator {
 
     // populate
     for (const one of notifications) {
-      assign(one, { sender: this.nickname[one.sender_id] });
       notifier[one.type].populate(this, one.content);
+      one.is_read = Boolean(one.is_read);
+      const { sender_id } = one.content;
       delete one.content.sender_id;
+      assign(one.content, { sender_id, sender: this.nickname[one.sender_id] });
+      delete one.sender_id;
     }
 
     return notifications;
