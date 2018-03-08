@@ -13,7 +13,7 @@ export async function create(props, user_id) {
 INSERT INTO notification_read
   (user_id, notification_id)
   VALUES
-${user_id.map(() => '  (?, ?)').join('\n')}
+${user_id.map(() => '  (?, ?)').join(',\n')}
 ;
 `;
   /** @type {number} */
