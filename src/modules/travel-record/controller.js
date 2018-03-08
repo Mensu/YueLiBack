@@ -22,8 +22,10 @@ export async function getRecordsList(ctx, next) {
 export async function create(ctx, next) {
   const { travel: { travel_id }, file, body } = ctx.paramData;
   const travel_record_id = await TRModel.create({ travel_id, ...body });
-  const uploader = new TravelRecordFile(travel_record_id);
-  await uploader.upload(file.buffer);
+  if (file) {
+    const uploader = new TravelRecordFile(travel_record_id);
+    await uploader.upload(file.buffer);
+  }
   return ctx.setResp('发表游记记录成功', { travel_record_id });
 }
 
