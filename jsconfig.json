@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "checkJs": true,
+    "target": "es6",
+    "moduleResolution": "node",
+    "lib": [
+      "esnext"
+    ]
+  },
+  "typeAcquisition": {
+    "enable": true
+  },
+  "exclude": [
+    "node_modules"
+  ]
+}
