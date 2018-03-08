@@ -30,8 +30,10 @@ export async function getFeelingsList(ctx, next) {
 export async function create(ctx, next) {
   const { curUser: { user_id }, file, body } = ctx.paramData;
   const feeling_id = await FeelingModel.create({ user_id, ...body });
-  const uploader = new FeelingFile(feeling_id);
-  await uploader.upload(file.buffer);
+  if (file) {
+    const uploader = new FeelingFile(feeling_id);
+    await uploader.upload(file.buffer);
+  }
   await ctx.setResp('发表心情成功', { feeling_id });
   assign(ctx.paramData, { feeling_id });
   return next();

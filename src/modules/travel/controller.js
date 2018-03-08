@@ -13,8 +13,10 @@ const { TravelFile } = TravelServ;
 export async function create(ctx, next) {
   const { curUser: { user_id }, file, body } = ctx.paramData;
   const travel_id = await TravelModel.create({ user_id, ...body });
-  const uploader = new TravelFile(travel_id);
-  await uploader.upload(file.buffer);
+  if (file) {
+    const uploader = new TravelFile(travel_id);
+    await uploader.upload(file.buffer);
+  }
   await ctx.setResp('创建游记成功', { travel_id });
   assign(ctx.paramData, { travel_id });
   return next();
