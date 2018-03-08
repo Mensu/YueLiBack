@@ -20,7 +20,8 @@ export async function findById(spot_id, user_id) {
   const sql = `
 SELECT spot.spot_id, name, description, city, location,
         rank, myrank,
-        IF(favorited IS NULL, FALSE, TRUE) AS favorited
+        IF(favorited IS NULL, FALSE, TRUE) AS favorited,
+        COALESCE(comment_count, 0) AS comment_count
   FROM spot
     LEFT JOIN
       (SELECT spot_id, AVG(rank) AS rank
@@ -40,6 +41,12 @@ SELECT spot.spot_id, name, description, city, location,
         WHERE user_id = ?
       ) AS spot_favorited
       ON spot.spot_id = spot_favorited.spot_id
+    LEFT JOIN
+      (SELECT spot_id, COUNT(comment_id) AS comment_count
+        FROM spot_comment
+        GROUP BY spot_id
+      ) AS spot_comment_count
+      ON spot.spot_id = spot_comment_count.spot_id
   WHERE spot.spot_id = ?
 ;
 `;
